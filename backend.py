@@ -89,15 +89,15 @@ def view_courses():
     conn.close()
     return rows
 
-def insert_courses(semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod):
+def insert_courses(semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod, ideaScore):
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
-    cur.execute("INSERT INTO courses VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod))
+    cur.execute("INSERT INTO courses VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod, ideaScore))
     conn.commit()
     conn.close()
 
-def search_courses(semester='', year='', courseNum='', sectionNum='', instructorID='', instructorLastName='', instructionMethod=''):
+def search_courses(semester='', year='', courseNum='', sectionNum='', instructorID='', instructorLastName='', instructionMethod='', ideaScore=''):
     # need the if statements because searching while fields were empty was pulling
     # up all records that had at least one empty field.
     if (semester=="") or (semester=="None"):
@@ -114,11 +114,13 @@ def search_courses(semester='', year='', courseNum='', sectionNum='', instructor
         instructorLastName="-1"
     if (instructionMethod=="") or (instructionMethod=="None"):
         instructionMethod=-1
+    if (ideaScore=="") or (ideaScore=="None"):
+        ideaScore=-1.1
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("""SELECT * FROM courses WHERE semester=? OR year=? OR courseNum=? OR sectionNum=?
-                OR instructorID=? OR instructorLastName=? OR instructionMethod=?""",
-                (semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod))
+                OR instructorID=? OR instructorLastName=? OR instructionMethod=? OR ideaScore=?""",
+                (semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod, ideaScore))
     #rows is a tuple containing all rows from db
     rows = cur.fetchall()
     conn.close()

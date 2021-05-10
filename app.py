@@ -8,12 +8,12 @@ import reports
 import startup
 #import excel_import
 import menu
-# How To Deploy to a single executable file (.EXE):
-#   From terminal: >>pyinstaller --onefile --windowed app.py
-# How To Deploy to deploy with directory and also an executable:
-#   From terminal: >>pyinstaller --windowed app.py
 
 '''
+Author: Thomas Welborn
+Position: Database Designer - Student Assistant (SHSU Department of Criminal Justice & Criminology)
+
+Purpose:
 This program is designed to enable the database containing
 professor and course catalog information to be easily modified
 and viewed. 
@@ -22,24 +22,6 @@ database in the requested format.
 It has the ability to import Excel files which are then
 parsed and added into the database in order to save time
 on data entry.
-
-Author: Thomas Welborn
-Position: Database Designer - Student Assistant (SHSU Department of Criminal Justice & Criminology)
-
-References:
-[1] stackoverflow.com, Available:[stackoverflow.com]
-[2] freeCodeCamp.org/Codemy Tkinter Course, Available:[https://www.youtube.com/watch?v=YXPyB4XeYLA&t=9506s&ab_channel=freeCodeCamp.org]
-[3] John W. Shipman Tkinter 8.5 reference, Available:[https://anzeljg.github.io/rin2/book2/2405/docs/tkinter/optionmenu.html]
-[4] geeksforgeeks.org, Avalable:[https://www.geeksforgeeks.org/dropdown-menus-tkinter/]
-[5] pythonspot "Tk dropdown example", Avalable:[https://pythonspot.com/tk-dropdown-example/]
-[6] sentdex, "Multiple Windows/Frames in Tkinter", Available:[https://www.youtube.com/watch?v=jBUpjijYtCk&list=LL&index=6&ab_channel=sentdex]
-[7] buildwithpython, "Python GUI with Tkinter", Available:[https://www.youtube.com/watch?v=MJJnQbA9tQs&list=LL&index=11&ab_channel=buildwithpython]
-[8] Corey Schafer, "Python OOP tutorial 3: classmethods and staticmethods", Available:[https://www.youtube.com/watch?v=rq8cL2XMM5M&list=LL&index=32&ab_channel=CoreySchafer]
-[9] Codemy.com
-[10] Brandon Jacobson, "Python SQLite Adding Photos", Available:[https://www.youtube.com/watch?v=zQqTuETzwBw&list=LL&index=45&ab_channel=BrandonJacobson]
-[11] Tech With Tim, "How to convert any Python File to .EXE", Available:[https://www.youtube.com/watch?v=UZX5kH72Yx4&list=LL&index=72&ab_channel=TechWithTim]
-[12] TechnoDine, "develop desktop application with python - Tkinter intro - mobile and desktop app dev python # 44", Available:[https://www.youtube.com/watch?v=d2eUNkcExfY&list=LL&index=77&ab_channel=TechnoDine]
-[13] Python/Tkinter Documentation, Available:[docs.python.org/3/library/tk.html]
 '''
 
 # Grabs the currently selected listbox row for professors
@@ -93,6 +75,8 @@ def get_selected_row_courses(event):
     #e7c.delete(0,END)
     #e7c.insert(END, selected_tuple2[6])
     instructMethod_text.set(selected_tuple2[6])
+    e8c.delete(0,END)
+    e8c.insert(END, selected_tuple2[7])
 
 
 ############################################################
@@ -134,10 +118,10 @@ def search_command_courses():
     list2.delete(0,END)
     list2.insert(END, "Search results for:")
     list2.insert(END,(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get()))  
+                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()))  
     list2.insert(END, "====================================================")
     for row in backend.search_courses(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get()):
+                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()):
         list2.insert(END,row)
 
 
@@ -162,12 +146,12 @@ def add_command_courses():
         pass
     else:
         backend.insert_courses(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get())
+                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get())
         list2.delete(0,END)
         list2.insert(END, "The record below was successfully added:")
         list2.insert(END, "====================================================")
         list2.insert(END,(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                        instructID_text.get(), instructLastName_text.get(), instructMethod_text.get()))  
+                        instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()))  
 
 
 def delete_command():
@@ -184,7 +168,7 @@ def delete_command_courses():
     list2.insert(END, "The record below was successfully deleted:")
     list2.insert(END, "====================================================")
     list2.insert(END,(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                        instructID_text.get(), instructLastName_text.get(), instructMethod_text.get()))
+                        instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()))
 
 
 def update_command():
@@ -225,6 +209,7 @@ def clear_command_courses():
     e6c.delete(0,END)
     #e7c.delete(0,END)
     instructMethod_text.set("")
+    e8c.delete(0,END)
     list2.delete(0,END)
 
 
@@ -417,6 +402,9 @@ l7c.grid(row=6, column=0)
 l8c = Label(frame_courses,text="(1=F2F, 2=Online, 3=Remote)")
 l8c.grid(row=7, column=0)
 
+l9c = Label(frame_courses,text="IDEA Score")
+l9c.grid(row=8, column=0)
+
 
 #makes the entry text boxes to accept user input
 semester_text = StringVar()
@@ -455,6 +443,12 @@ instructDropMenu = OptionMenu(frame_courses, instructMethod_text, *instruct_opti
 instructDropMenu.grid(row=6, column=1)
 #e7c = Entry(frame_courses, textvariable = instructMethod_text)
 #e7c.grid(row=6, column=1)
+
+ideaScore_text = StringVar()
+e8c = Entry(frame_courses, textvariable = ideaScore_text)
+e8c.grid(row=8, column=1)
+
+
 
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
@@ -505,54 +499,6 @@ but9c = Button(frame_courses, text='\nImport Excel\nDocument\n', width=12,
              command=import_excel_courses)
 but9c.grid(row=0, column=5, rowspan=2)
 '''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #end of main window that wraps all of the widgets
 window.mainloop()

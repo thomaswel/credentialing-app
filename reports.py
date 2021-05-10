@@ -25,7 +25,7 @@ class ProfReport:
         top = Toplevel()
         myTitle = "Professor Credentials for: " + str(self.firstName) + " " + str(self.lastName)
         top.wm_title(myTitle)
-        textBox = Text(top, height=20, width=50)
+        textBox = Text(top, height=20, width=70)
         textBox.grid(row=0, column=0)
         myScrollBar = Scrollbar(top, orient='vertical')
         myScrollBar.grid(row=0, column=1)
@@ -69,20 +69,36 @@ class ProfReport:
         textBox.insert(END, myString)
 
         # Pull courses the professor has taught from courses table
-        myString = "Courses Taught: " + str('\n')
+        courses = backend.prof_report(self.samID)
+
+        # Calculate the average IDEA score for the professor across all courses.
+        ideaSum = 0
+        ideaCount = 0
+        for i in range (len(courses)):
+            if (courses[i][7] != None):
+                ideaSum += courses[i][7]
+                ideaCount += 1
+        if (ideaCount == 0):
+            myString = "Average IDEA score across all courses taught: N/A\n"
+        else:
+            ideaAvg = ideaSum / ideaCount
+            ideaAvgString = "%.2f" % ideaAvg
+            myString = "Average IDEA score across all courses taught: " + ideaAvgString + "\n"
         textBox.insert(END, myString)
         
-        courses = backend.prof_report(self.samID)
+        myString = "Courses Taught: " + str('\n')
+        textBox.insert(END, myString)
         for i in range (len(courses)):
             myString = str(courses[i][0]) + " " + str(courses[i][1]) + " "
             myString += "Course " + str(courses[i][2]) + ", "
-            myString += "Section " + str(courses[i][3]) + ", "
+            myString += "Section " + str(courses[i][3]) + " "
             if (courses[i][6] == 1):
                 myString += "(In-person)"
             if (courses[i][6] == 2):
                 myString += "(Online)"
             if (courses[i][6] == 3):
                 myString += "(Remote Sync)"
+            myString += " IDEA score = " + str(courses[i][7])
             myString += '\n'
             textBox.insert(END, myString)
             
@@ -197,6 +213,7 @@ class CourseReport:
                 myString += " (Remote Sync): "
             myString += "Taught by " + str(courses[i][5]) + " (samID:" + str(courses[i][4])
             myString += ")\n"
+            myString +="\tIDEA score = " + str(courses[i][7]) + "\n"
             textBox.insert(END, myString)
         myString = "\n\n"
         textBox.insert(END, myString)
@@ -206,7 +223,18 @@ class CourseReport:
         textBox.insert(END, myString)
         for i in range (len(prof_ID_list)):
             currInfo = backend.get_prof_info(prof_ID_list[i])
-            myString = str(currInfo[0][1]) + " " + str(currInfo[0][2]) + ":\n"
+            myString = str(currInfo[0][1]) + " " + str(currInfo[0][2]) + " ("
+            # Get the professor type
+            if currInfo[0][10] == 1:
+                myString += "Full Time):\n"
+            elif currInfo[0][10] == 2:
+                myString += "Doctoral Teaching):\n"
+            elif currInfo[0][10] == 3:
+                myString += "Overload):\n"
+            elif currInfo[0][10] == 4:
+                myString += "Lecturer/Adjunct):\n"
+            else:
+                myString += "Unspecified):\n"
             textBox.insert(END, myString)
             myString = str(currInfo[0][9]) + "\n\n"
             textBox.insert(END, myString)
