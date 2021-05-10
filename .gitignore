@@ -1,0 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# pyinstaller / distribution
+build/
+dist/
+
+# assets for the project
+Assets/
+
+*.xlsx
+*.db 
