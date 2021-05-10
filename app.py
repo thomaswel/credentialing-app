@@ -180,6 +180,19 @@ def update_command():
     list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
                        docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))  
 
+
+def update_command_courses():
+    if ((semester_text.get() == '') or (year_text.get() == '') or (courseNum_text.get() == '') or (sectionNum_text.get() == '')):
+        pass
+    else:
+        try:
+            backend.update_courses(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
+                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get())
+        except:
+            list2.delete(0,END)
+            list2.insert(END, "Unable to perform update.")
+
+
 def cv_command():
     cv = ".\\Assets\\CVs\\"
     cv += str(selected_tuple[4])
@@ -453,10 +466,10 @@ e8c.grid(row=8, column=1)
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
 list2 = Listbox(frame_courses, height=15, width=70)
-list2.grid(row=0, column=3, rowspan=8, columnspan=1)
+list2.grid(row=0, column=3, rowspan=9, columnspan=1)
 
 scrollbar2 = Scrollbar(frame_courses, orient='vertical')
-scrollbar2.grid(row=0, column=4, rowspan = 8)
+scrollbar2.grid(row=0, column=4, rowspan = 9)
 
 list2.configure(yscrollcommand=scrollbar2.set)
 scrollbar2.configure(command=list2.yview)
@@ -475,13 +488,13 @@ b2c.grid(row=1, column=2)
 b3c = Button(frame_courses, text='Add Entry', width=12, command=add_command_courses)
 b3c.grid(row=3, column=2)
 
-'''
-b4c = Button(frame_courses, text='Update Selected', width=12, command=update_command)
+
+b4c = Button(frame_courses, text='Update Selected', width=12, command=update_command_courses)
 b4c.grid(row=4, column=2)
-'''
+
 
 b5c = Button(frame_courses, text='Delete Selected', width=12, command=delete_command_courses)
-b5c.grid(row=4, column=2)
+b5c.grid(row=5, column=2)
 
 '''
 b6c = Button(frame_courses, text='Exit', width=12, command=window.destroy)
@@ -493,7 +506,7 @@ b7c.grid(row=0, column=2)
 
 b8c = Button(frame_courses, text='Generate\nCourse Report\n(Requires:\nSemester,\nYear,Course)', width=12,
              command=report_command_courses)
-b8c.grid(row=5, column=2, rowspan=3)
+b8c.grid(row=6, column=2, rowspan=3)
 '''
 but9c = Button(frame_courses, text='\nImport Excel\nDocument\n', width=12,
              command=import_excel_courses)

@@ -134,6 +134,16 @@ def delete_courses(semester, year, courseNum, sectionNum):
     conn.commit()
     conn.close()
 
+# Update assumes that the samID is correct and will only change the other fields.
+def update_courses(semester='', year='', courseNum='', sectionNum='', instructorID='', instructorLastName='', instructionMethod='', ideaScore=''):
+    conn = sqlite3.connect("professors.db")
+    cur = conn.cursor()
+    cur.execute("""UPDATE courses SET instructorID=?, instructorLastName=?, instructionMethod=?, ideaScore=?
+                 WHERE semester=? AND year=? AND courseNum=? AND sectionNum=?""",
+                (instructorID, instructorLastName, instructionMethod, ideaScore, semester, year, courseNum, sectionNum))
+    conn.commit()
+    conn.close()
+
 
 ######################################################################
 # FUNCTIONS FOR REPORT GENERATION
