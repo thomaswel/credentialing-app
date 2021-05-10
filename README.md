@@ -1,2 +1,2 @@
 # credentialing-app
- A desktop application that produces university undergraduate course reports and does professor credentialing.
+ A desktop application that produces university undergraduate course reports and does professor credentialing. It is written entirely in Python, and it uses a locally saved SQLite relational database to store course catalogs spanning multiple semesters and professor credentials. Developed while I was an undergraduate cs student for my job as a database designer-student assistant for the Department of Criminal Justice and Criminology at SHSU.
