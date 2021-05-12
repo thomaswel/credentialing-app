@@ -30,3 +30,8 @@
 [15]https://www.designcise.com/web/tutorial/how-to-do-case-insensitive-comparisons-in-sqlite
 
 [16]https://stackoverflow.com/questions/973541/how-to-set-sqlite3-to-be-case-insensitive-when-string-comparing
+
+[17]https://stackoverflow.com/questions/21142531/sqlite3-operationalerror-no-such-column
+
+[18]https://stackoverflow.com/questions/47458189/sqlite3-operationalerror-no-such-column-but-im-not-asking-for-a-column/47458239
+

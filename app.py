@@ -114,6 +114,22 @@ def search_command():
                               docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()):
         list1.insert(END,row)
 
+def search_doctoral():
+    list1.delete(0,END)
+    try:
+        for row in (backend.getDoctoralOnly()):
+            list1.insert(END,row)
+    except:
+        pass
+
+def search_masters():
+    list1.delete(0,END)
+    try:
+        for row in (backend.getMastersOnly()):
+            list1.insert(END,row)
+    except:
+        pass
+
 def search_command_courses():
     list2.delete(0,END)
     list2.insert(END, "Search results for:")
@@ -231,7 +247,7 @@ def clear_command_courses():
 #creates window object
 #####################################################################################
 window=Tk()
-window.wm_title("SHSU CRIJ Professor Database Desktop App V1.4")
+window.wm_title("SHSU CRIJ Professor Credentialing Database Desktop App V1.5")
 #icon = ".\\Assets\\Icons\\db_logo.ico"
 #window.iconbitmap(icon)
 
@@ -336,13 +352,13 @@ profTypeDropMenu.grid(row=10, column=1)
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
 list1 = Listbox(frame_profs, height=20, width=70)
-list1.grid(row=0, column=3, rowspan=11, columnspan=1)
+list1.grid(row=1, column=3, rowspan=10, columnspan=2)
 
 scrollbar1 = Scrollbar(frame_profs, orient='vertical')
-scrollbar1.grid(row=0, column=4, rowspan = 11)
+scrollbar1.grid(row=1, column=5, rowspan = 10)
 
 scrollbarHoriz1 = Scrollbar(frame_profs, orient='horizontal')
-scrollbarHoriz1.grid(row=11, column=3, columnspan=1)
+scrollbarHoriz1.grid(row=11, column=3, columnspan=2)
 
 list1.configure(yscrollcommand=scrollbar1.set, xscrollcommand=scrollbarHoriz1.set)
 scrollbar1.configure(command=list1.yview)
@@ -379,6 +395,12 @@ b8.grid(row=0, column=2)
 
 b9 = Button(frame_profs, text='\nGenerate\nProfessor\nReport\n', width=12, command=report_command)
 b9.grid(row=7, column=2, rowspan=3)
+
+b10 = Button(frame_profs, text='Show Only Doctoral Degree Holders', width=29, command=search_doctoral)
+b10.grid(row=0, column=3)
+
+b11 = Button(frame_profs, text='Show Only Master\'s Degree Holders', width=29, command=search_masters)
+b11.grid(row=0, column=4)
 
 
 
