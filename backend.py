@@ -76,6 +76,21 @@ def update(samID, firstName, lastName, email, cv, docYear, docType, mastYear, ma
     conn.commit()
     conn.close()
 
+def getDoctoralOnly():
+    conn = sqlite3.connect("professors.db")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM profs WHERE doctorate_year IS NOT NULL AND doctorate_year!=\'\'")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
+def getMastersOnly():
+    conn = sqlite3.connect("professors.db")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM profs WHERE doctorate_year IS NULL OR doctorate_year=\'\'")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
 
 ###############################################################
 # FUNCTIONS FOR COURSES TABLE
@@ -98,33 +113,102 @@ def insert_courses(semester, year, courseNum, sectionNum, instructorID, instruct
     conn.close()
 
 def search_courses(semester='', year='', courseNum='', sectionNum='', instructorID='', instructorLastName='', instructionMethod='', ideaScore=''):
-    # need the if statements because searching while fields were empty was pulling
-    # up all records that had at least one empty field.
+    searchString = "SELECT * FROM courses WHERE"
+    count = 0
+    
     if (semester=="") or (semester=="None"):
         semester = "-1"
+    else:
+        searchString += " semester= \'" + str(semester) + "\'"
+        count += 1
+    
+
     if (year=="") or (year=="None"):
         year = -1
+    else:
+        if (count==0):
+            searchString += " year=\'" + str(year) + "\'"
+            count +=1
+        else:
+            searchString += " AND year=\'" + str(year) + "\'"
+            count +=1
+
+
     if (courseNum=="") or (courseNum=="None"):
         courseNum=-1
+    else:
+        if (count==0):
+            searchString += " courseNum=\'" + str(courseNum) + "\'"
+            count += 1
+        else:
+            searchString += " AND courseNum=\'" + str(courseNum) + "\'"
+            count +=1
+
+
     if (sectionNum=="") or (sectionNum=="None"):
         sectionNum=-1
+    else:
+        if (count==0):
+            searchString += " sectionNum=\'" + str(sectionNum) + "\'"
+            count += 1
+        else:
+            searchString += " AND sectionNum=\'" + str(sectionNum) + "\'"
+            count +=1
+
+
     if (instructorID=="") or (instructorID=="None"):
         instructorID=-1
+    else:
+        if (count==0):
+            searchString += " instructorID=\'" + str(instructorID) + "\'"
+            count += 1
+        else:
+            searchString += " AND instructorID=\'" + str(instructorID) + "\'"
+            count +=1
+
+
     if (instructorLastName=="") or (instructorLastName=="None"):
         instructorLastName="-1"
+    else:
+        if (count==0):
+            searchString += " instructorLastName=\'" + str(instructorLastName) + "\'"
+            count += 1
+        else:
+            searchString += " AND instructorLastName=\'" + str(instructorLastName) + "\'"
+            count +=1
+
+
     if (instructionMethod=="") or (instructionMethod=="None"):
         instructionMethod=-1
+    else:
+        if (count==0):
+            searchString += " instructionMethod=\'" + str(instructionMethod) + "\'"
+            count += 1
+        else:
+            searchString += " AND instructionMethod=\'" + str(instructionMethod) + "\'"
+            count +=1
+
+
     if (ideaScore=="") or (ideaScore=="None"):
         ideaScore=-1.1
-    conn = sqlite3.connect("professors.db")
-    cur = conn.cursor()
-    cur.execute("""SELECT * FROM courses WHERE semester=? OR year=? OR courseNum=? OR sectionNum=?
-                OR instructorID=? OR instructorLastName=? OR instructionMethod=? OR ideaScore=?""",
-                (semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod, ideaScore))
-    #rows is a tuple containing all rows from db
-    rows = cur.fetchall()
-    conn.close()
-    return rows
+    else:
+        if (count==0):
+            searchString += " ideaScore=\'" + str(ideaScore) + "\'"
+            count += 1
+        else:
+            searchString += " AND ideaScore=\'" + str(ideaScore) + "\'"
+            count +=1
+
+
+    if (count != 0):
+        #print(searchString)
+        conn = sqlite3.connect("professors.db")
+        cur = conn.cursor()
+        cur.execute(searchString)
+        #rows is a tuple containing all rows from db
+        rows = cur.fetchall()
+        conn.close()
+        return rows
 
 def delete_courses(semester, year, courseNum, sectionNum):
     conn = sqlite3.connect("professors.db")
