@@ -258,107 +258,114 @@ menu.make_menu(window)
 # Make the frames to logically separate the GUI.
 frame_profs = LabelFrame(window, text="PROFESSORS", padx=10, pady=10)
 frame_courses = LabelFrame(window, text="COURSES", padx=10, pady=10)
-frame_profs.pack(padx=10, pady=5)
-frame_courses.pack(padx=10, pady=5)
+'''
+frame_profs.pack(padx=10, pady=5, expand=True)
+frame_courses.pack(padx=10, pady=5, expand=True)
+'''
+frame_profs.grid(row=0, column=0, sticky='nsew')
+frame_courses.grid(row=1, column=0,sticky='nsew')
+Grid.rowconfigure(window, 0, weight=1)
+Grid.rowconfigure(window, 1, weight=1)
+Grid.columnconfigure(window, 0, weight=1)
 
 ##########################################################################
 # POPULATE THE PROFESSOR FRAME
 ##########################################################################
 #makes the labels beside the text boxes
 l1 = Label(frame_profs,text="SamID")
-l1.grid(row=0, column=0)
+l1.grid(row=0, column=0, sticky='nsew')
 
 l2 = Label(frame_profs,text="First Name")
-l2.grid(row=1, column=0)
+l2.grid(row=1, column=0, sticky='nsew')
 
 l3 = Label(frame_profs,text="Last Name")
-l3.grid(row=2, column=0)
+l3.grid(row=2, column=0, sticky='nsew')
 
 l4 = Label(frame_profs,text="Email")
-l4.grid(row=3, column=0)
+l4.grid(row=3, column=0, sticky='nsew')
 
 l5 = Label(frame_profs,text="CV")
-l5.grid(row=4, column=0)
+l5.grid(row=4, column=0, sticky='nsew')
 
 l6 = Label(frame_profs,text="Doctorate Year")
-l6.grid(row=5, column=0)
+l6.grid(row=5, column=0, sticky='nsew')
 
 l7 = Label(frame_profs,text="Doctorate Type")
-l7.grid(row=6, column=0)
+l7.grid(row=6, column=0, sticky='nsew')
 
 l8 = Label(frame_profs,text="Master's Year")
-l8.grid(row=7, column=0)
+l8.grid(row=7, column=0, sticky='nsew')
 
 l9 = Label(frame_profs,text="Master's Type")
-l9.grid(row=8, column=0)
+l9.grid(row=8, column=0, sticky='nsew')
 
 l10 = Label(frame_profs,text="Experience")
-l10.grid(row=9, column=0)
+l10.grid(row=9, column=0, sticky='nsew')
 
 lab11 = Label(frame_profs, text="Prof Type")
-lab11.grid(row=10, column=0)
+lab11.grid(row=10, column=0, sticky='nsew')
 
 lab12 = Label(frame_profs, text="(1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct)")
-lab12.grid(row=11, column=0, columnspan=3)
+lab12.grid(row=11, column=0, columnspan=3, sticky='nsew')
 
 
 #makes the entry text boxes to accept user input
 samID_text = StringVar()
 e1 = Entry(frame_profs, textvariable = samID_text, width=34)
-e1.grid(row=0, column=1)
+e1.grid(row=0, column=1, sticky='nsew')
 
 firstName_text = StringVar()
 e2 = Entry(frame_profs, textvariable = firstName_text, width=34)
-e2.grid(row=1, column=1)
+e2.grid(row=1, column=1, sticky='nsew')
 
 lastName_text = StringVar()
 e3 = Entry(frame_profs, textvariable = lastName_text, width=34)
-e3.grid(row=2, column=1)
+e3.grid(row=2, column=1, sticky='nsew')
 
 email_text = StringVar()
 e4 = Entry(frame_profs, textvariable = email_text, width=34)
-e4.grid(row=3, column=1)
+e4.grid(row=3, column=1, sticky='nsew')
 
 cv_text = StringVar()
 e5 = Entry(frame_profs, textvariable = cv_text, width=34)
-e5.grid(row=4, column=1)
+e5.grid(row=4, column=1, sticky='nsew')
 
 docYear_text = StringVar()
 e6 = Entry(frame_profs, textvariable = docYear_text, width=34)
-e6.grid(row=5, column=1)
+e6.grid(row=5, column=1, sticky='nsew')
 
 docType_text = StringVar()
 e7 = Entry(frame_profs, textvariable = docType_text, width=34)
-e7.grid(row=6, column=1)
+e7.grid(row=6, column=1, sticky='nsew')
 
 mastYear_text = StringVar()
 e8 = Entry(frame_profs, textvariable = mastYear_text, width=34)
-e8.grid(row=7, column=1)
+e8.grid(row=7, column=1, sticky='nsew')
 
 mastType_text = StringVar()
 e9 = Entry(frame_profs, textvariable = mastType_text, width=34)
-e9.grid(row=8, column=1)
+e9.grid(row=8, column=1, sticky='nsew')
 
 experience_text = StringVar()
 e10 = Entry(frame_profs, textvariable = experience_text, width=34)
-e10.grid(row=9, column=1)
+e10.grid(row=9, column=1, sticky='nsew')
 
 profType_text = StringVar()
 profType_options=[1, 2, 3, 4, ""]
 profType_text.set("")
 profTypeDropMenu = OptionMenu(frame_profs, profType_text, *profType_options)
-profTypeDropMenu.grid(row=10, column=1)
+profTypeDropMenu.grid(row=10, column=1, sticky='nsew')
 
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
 list1 = Listbox(frame_profs, height=20, width=70)
-list1.grid(row=1, column=3, rowspan=10, columnspan=2)
+list1.grid(row=1, column=3, rowspan=10, columnspan=2, sticky='nsew')
 
 scrollbar1 = Scrollbar(frame_profs, orient='vertical')
-scrollbar1.grid(row=1, column=5, rowspan = 10)
+scrollbar1.grid(row=1, column=5, rowspan = 10, sticky='nsew')
 
 scrollbarHoriz1 = Scrollbar(frame_profs, orient='horizontal')
-scrollbarHoriz1.grid(row=11, column=3, columnspan=2)
+scrollbarHoriz1.grid(row=11, column=3, columnspan=2, sticky='nsew')
 
 list1.configure(yscrollcommand=scrollbar1.set, xscrollcommand=scrollbarHoriz1.set)
 scrollbar1.configure(command=list1.yview)
@@ -370,37 +377,37 @@ list1.bind('<<ListboxSelect>>', get_selected_row)
 #make the buttons on the right side
 #note that button commands do not need "()" at the end. it is part of tkinter
 b1 = Button(frame_profs, text='View All', width=12, command=view_command)
-b1.grid(row=2, column=2)
+b1.grid(row=2, column=2, sticky='nsew')
 
 b2 = Button(frame_profs, text='Search Entry', width=12, command=search_command)
-b2.grid(row=1, column=2)
+b2.grid(row=1, column=2, sticky='nsew')
 
 b3 = Button(frame_profs, text='Add Entry', width=12, command=add_command)
-b3.grid(row=3, column=2)
+b3.grid(row=3, column=2, sticky='nsew')
 
 b4 = Button(frame_profs, text='Update Selected', width=12, command=update_command)
-b4.grid(row=4, column=2)
+b4.grid(row=4, column=2, sticky='nsew')
 
 b5 = Button(frame_profs, text='Delete Selected', width=12, command=delete_command)
-b5.grid(row=5, column=2)
+b5.grid(row=5, column=2, sticky='nsew')
 '''
 b6 = Button(frame_profs, text='Exit', width=12, command=window.destroy)
 b6.grid(row=8, column=2)
 '''
 b7 = Button(frame_profs, text='Open CV', width=12, command=cv_command)
-b7.grid(row=6, column=2)
+b7.grid(row=6, column=2, sticky='nsew')
 
 b8 = Button(frame_profs, text='Clear Fields', width=12, command=clear_command)
-b8.grid(row=0, column=2)
+b8.grid(row=0, column=2, sticky='nsew')
 
 b9 = Button(frame_profs, text='\nGenerate\nProfessor\nReport\n', width=12, command=report_command)
-b9.grid(row=7, column=2, rowspan=3)
+b9.grid(row=7, column=2, rowspan=3, sticky='nsew')
 
 b10 = Button(frame_profs, text='Show Only Doctoral Degree Holders', width=29, command=search_doctoral)
-b10.grid(row=0, column=3)
+b10.grid(row=0, column=3, sticky='nsew')
 
 b11 = Button(frame_profs, text='Show Only Master\'s Degree Holders', width=29, command=search_masters)
-b11.grid(row=0, column=4)
+b11.grid(row=0, column=4, sticky='nsew')
 
 
 
@@ -414,31 +421,31 @@ b11.grid(row=0, column=4)
 
 #makes the labels beside the text boxes
 l1c = Label(frame_courses,text="Semester (Fall,Spring,Summer)")
-l1c.grid(row=0, column=0)
+l1c.grid(row=0, column=0, sticky='nsew')
 
 l2c = Label(frame_courses,text="Year (4-digit)")
-l2c.grid(row=1, column=0)
+l2c.grid(row=1, column=0, sticky='nsew')
 
 l3c = Label(frame_courses,text="Course Number (4-digit)")
-l3c.grid(row=2, column=0)
+l3c.grid(row=2, column=0, sticky='nsew')
 
 l4c = Label(frame_courses,text="Section Number")
-l4c.grid(row=3, column=0)
+l4c.grid(row=3, column=0, sticky='nsew')
 
 l5c = Label(frame_courses,text="Instructor's SamID")
-l5c.grid(row=4, column=0)
+l5c.grid(row=4, column=0, sticky='nsew')
 
 l6c = Label(frame_courses,text="Instructor's Last Name")
-l6c.grid(row=5, column=0)
+l6c.grid(row=5, column=0, sticky='nsew')
 
 l7c = Label(frame_courses,text="Instruction Method")
-l7c.grid(row=6, column=0)
+l7c.grid(row=6, column=0, sticky='nsew')
 
 l8c = Label(frame_courses,text="(1=F2F, 2=Online, 3=Remote)")
-l8c.grid(row=7, column=0)
+l8c.grid(row=7, column=0, sticky='nsew')
 
 l9c = Label(frame_courses,text="IDEA Score")
-l9c.grid(row=8, column=0)
+l9c.grid(row=8, column=0, sticky='nsew')
 
 
 #makes the entry text boxes to accept user input
@@ -446,52 +453,52 @@ semester_text = StringVar()
 sem_options = ["Spring", "Summer", "Fall", ""]
 semester_text.set("")
 semDropMenu = OptionMenu(frame_courses, semester_text, *sem_options)
-semDropMenu.grid(row=0, column=1)
+semDropMenu.grid(row=0, column=1, sticky='nsew')
 #e1c = Entry(frame_courses, textvariable = semester_text)
 #e1c.grid(row=0, column=1)
 
 
 year_text = StringVar()
 e2c = Entry(frame_courses, textvariable = year_text)
-e2c.grid(row=1, column=1)
+e2c.grid(row=1, column=1, sticky='nsew')
 
 courseNum_text = StringVar()
 e3c = Entry(frame_courses, textvariable = courseNum_text)
-e3c.grid(row=2, column=1)
+e3c.grid(row=2, column=1, sticky='nsew')
 
 sectionNum_text = StringVar()
 e4c = Entry(frame_courses, textvariable = sectionNum_text)
-e4c.grid(row=3, column=1)
+e4c.grid(row=3, column=1, sticky='nsew')
 
 instructID_text = StringVar()
 e5c = Entry(frame_courses, textvariable = instructID_text)
-e5c.grid(row=4, column=1)
+e5c.grid(row=4, column=1, sticky='nsew')
 
 instructLastName_text = StringVar()
 e6c = Entry(frame_courses, textvariable = instructLastName_text)
-e6c.grid(row=5, column=1)
+e6c.grid(row=5, column=1, sticky='nsew')
 
 instructMethod_text = StringVar()
 instruct_options=[1, 2, 3, ""]
 instructMethod_text.set("")
 instructDropMenu = OptionMenu(frame_courses, instructMethod_text, *instruct_options)
-instructDropMenu.grid(row=6, column=1)
+instructDropMenu.grid(row=6, column=1, sticky='nsew')
 #e7c = Entry(frame_courses, textvariable = instructMethod_text)
 #e7c.grid(row=6, column=1)
 
 ideaScore_text = StringVar()
 e8c = Entry(frame_courses, textvariable = ideaScore_text)
-e8c.grid(row=8, column=1)
+e8c.grid(row=8, column=1, sticky='nsew')
 
 
 
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
 list2 = Listbox(frame_courses, height=15, width=70)
-list2.grid(row=0, column=3, rowspan=9, columnspan=1)
+list2.grid(row=0, column=3, rowspan=9, columnspan=1, sticky='nsew')
 
 scrollbar2 = Scrollbar(frame_courses, orient='vertical')
-scrollbar2.grid(row=0, column=4, rowspan = 9)
+scrollbar2.grid(row=0, column=4, rowspan = 9, sticky='nsew')
 
 list2.configure(yscrollcommand=scrollbar2.set)
 scrollbar2.configure(command=list2.yview)
@@ -502,21 +509,21 @@ list2.bind('<<ListboxSelect>>', get_selected_row_courses)
 #make the buttons on the right side
 #note that button commands do not need "()" at the end. it is part of tkinter
 b1c = Button(frame_courses, text='View All', width=12, command=view_command_courses)
-b1c.grid(row=2, column=2)
+b1c.grid(row=2, column=2, sticky='nsew')
 
 b2c = Button(frame_courses, text='Search Entry', width=12, command=search_command_courses)
-b2c.grid(row=1, column=2)
+b2c.grid(row=1, column=2, sticky='nsew')
 
 b3c = Button(frame_courses, text='Add Entry', width=12, command=add_command_courses)
-b3c.grid(row=3, column=2)
+b3c.grid(row=3, column=2, sticky='nsew')
 
 
 b4c = Button(frame_courses, text='Update Selected', width=12, command=update_command_courses)
-b4c.grid(row=4, column=2)
+b4c.grid(row=4, column=2, sticky='nsew')
 
 
 b5c = Button(frame_courses, text='Delete Selected', width=12, command=delete_command_courses)
-b5c.grid(row=5, column=2)
+b5c.grid(row=5, column=2, sticky='nsew')
 
 '''
 b6c = Button(frame_courses, text='Exit', width=12, command=window.destroy)
@@ -524,16 +531,29 @@ b6c.grid(row=6, column=2)
 '''
 
 b7c = Button(frame_courses, text='Clear Fields', width=12, command=clear_command_courses)
-b7c.grid(row=0, column=2)
+b7c.grid(row=0, column=2, sticky='nsew')
 
 b8c = Button(frame_courses, text='Generate\nCourse Report\n(Requires:\nSemester,\nYear,Course)', width=12,
              command=report_command_courses)
-b8c.grid(row=6, column=2, rowspan=3)
+b8c.grid(row=6, column=2, rowspan=3, sticky='nsew')
 '''
 but9c = Button(frame_courses, text='\nImport Excel\nDocument\n', width=12,
              command=import_excel_courses)
 but9c.grid(row=0, column=5, rowspan=2)
 '''
+
+#Configure the rows and columns to be responsive
+for i in range(12):
+    Grid.rowconfigure(frame_profs, i, weight=1)
+for i in range(6):
+    Grid.columnconfigure(frame_profs, i, weight=1)
+
+for i in range(9):
+    Grid.rowconfigure(frame_courses, i, weight=1)
+for i in range(5):
+    Grid.columnconfigure(frame_courses, i, weight=1)
+
+
 
 #end of main window that wraps all of the widgets
 window.mainloop()

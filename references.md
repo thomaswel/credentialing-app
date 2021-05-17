@@ -35,3 +35,7 @@
 
 [18]https://stackoverflow.com/questions/47458189/sqlite3-operationalerror-no-such-column-but-im-not-asking-for-a-column/47458239
 
+[19]https://www.tutorialspoint.com/python/tk_frame.htm
+
+[20]https://www.youtube.com/watch?v=rZxOe1kVF8Q&list=LL&index=8&t=110s
+
