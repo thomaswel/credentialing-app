@@ -26,11 +26,17 @@ class ProfReport:
         myTitle = "Professor Credentials for: " + str(self.firstName) + " " + str(self.lastName)
         top.wm_title(myTitle)
         textBox = Text(top, height=20, width=70)
-        textBox.grid(row=0, column=0)
+        textBox.grid(row=0, column=0, sticky='nsew')
         myScrollBar = Scrollbar(top, orient='vertical')
-        myScrollBar.grid(row=0, column=1)
+        myScrollBar.grid(row=0, column=1, sticky='nsew')
         textBox.configure(yscrollcommand=myScrollBar.set)
         myScrollBar.configure(command=textBox.yview)
+
+        # Make the 'top' window, textbox, and scroll bar resizable
+        Grid.rowconfigure(top, 0, weight=1)
+        Grid.columnconfigure(top, 0, weight=1)
+        
+
 
         # Populate the text box
         myString = "Professor Credentials for: " + str(self.firstName) + " " + str(self.lastName)
@@ -116,12 +122,16 @@ class CourseReport:
         myTitle = "Course Report for: " + str(self.semester) + " " + str(self.year) + " CRIJ " + str(self.courseNum)
         top.wm_title(myTitle)
         textBox = Text(top, height=20, width=65)
-        textBox.grid(row=0, column=0)
+        textBox.grid(row=0, column=0, sticky='nsew')
         myScrollBar = Scrollbar(top, orient='vertical')
-        myScrollBar.grid(row=0, column=1)
+        myScrollBar.grid(row=0, column=1, sticky='nsew')
         textBox.configure(yscrollcommand=myScrollBar.set)
         myScrollBar.configure(command=textBox.yview)
-            
+
+        # Make the 'top' window, textbox, and scroll bar resizable
+        Grid.rowconfigure(top, 0, weight=1)
+        Grid.columnconfigure(top, 0, weight=1)
+
         # Populate the text box
         myString = "Course Report for: " + str(self.semester) + " " + str(self.year) + " CRIJ " + str(self.courseNum)
         textBox.insert(END, myString)

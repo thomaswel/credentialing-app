@@ -543,14 +543,14 @@ but9c.grid(row=0, column=5, rowspan=2)
 '''
 
 #Configure the rows and columns to be responsive
-for i in range(12):
+for i in range(0, 11):
     Grid.rowconfigure(frame_profs, i, weight=1)
-for i in range(6):
+for i in range(1,5):
     Grid.columnconfigure(frame_profs, i, weight=1)
 
 for i in range(9):
     Grid.rowconfigure(frame_courses, i, weight=1)
-for i in range(5):
+for i in range(1,4):
     Grid.columnconfigure(frame_courses, i, weight=1)
 
 
