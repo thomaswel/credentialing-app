@@ -7,11 +7,11 @@ and querying the sqlite3 'professors' database.
 ######################################################
 ##       FUNCTIONS FOR PROFS TABLE                  ##
 ######################################################
-def insert(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType):
+def insert(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert):
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
-    cur.execute("INSERT INTO profs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType))
+    cur.execute("INSERT INTO profs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert))
     conn.commit()
     conn.close()
 
@@ -24,7 +24,7 @@ def view():
     conn.close()
     return rows
 
-def search(samID="", firstName="", lastName="", email="", cv="", docYear="", docType="", mastYear="", mastType="", experience="", profType=""):
+def search(samID="", firstName="", lastName="", email="", cv="", docYear="", docType="", mastYear="", mastType="", experience="", profType="", onlineCert=""):
     # Need the if statements because searching while fields were empty was pulling
     # up all records that had at least one empty field.
     if (samID=="") or (samID=="None"):
@@ -49,11 +49,13 @@ def search(samID="", firstName="", lastName="", email="", cv="", docYear="", doc
         experience="-1"
     if (profType == "") or (profType=="None"):
         profType=-1
+    if (onlineCert=="") or (onlineCert=="None"):
+        onlineCert=-1
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("""SELECT * FROM profs WHERE samID=? OR firstName=? OR lastName=? OR email=? OR cv=?
                 OR doctorate_year=? OR doctorate_type=? OR masters_year=? OR masters_type=? OR experience=? OR profType=?""",
-                (samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType))
+                (samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert))
     #rows is a tuple containing all rows from db
     rows = cur.fetchall()
     conn.close()
@@ -67,12 +69,12 @@ def delete(samID):
     conn.close()
 
 # Update assumes that the samID is correct and will only change the other fields.
-def update(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType):
+def update(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert):
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("""UPDATE profs SET firstName=?, lastName=?, email=?, cv=?, doctorate_year=?,
-                doctorate_type=?, masters_year=?, masters_type=?, experience=?, profType=? WHERE samID=?""",
-                (firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, samID))
+                doctorate_type=?, masters_year=?, masters_type=?, experience=?, profType=?, onlineCert=? WHERE samID=?""",
+                (firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert, samID))
     conn.commit()
     conn.close()
 

@@ -80,7 +80,7 @@ class ExcelImportProfs:
     def add_rows(self):
         # First prompt the user to pick their Excel file.
         # Safeguard, keep prompting user for a new file if the number of columns != 7.
-        while self.columnNum != 11:
+        while self.columnNum != 12:
             # Prompt the user with filedialog.
             myFilename = filedialog.askopenfilename(initialdir='/', title="Select an Excel sheet to import Professors.",
                                                filetypes=(("Excel Files", "*.xlsx"), ("All Files", "*.*")))
@@ -123,7 +123,7 @@ class ExcelImportProfs:
             try:
                 backend.insert(self.rowList[i][0], self.rowList[i][1], self.rowList[i][2], self.rowList[i][3],
                                        self.rowList[i][4], self.rowList[i][5], self.rowList[i][6], self.rowList[i][7], 
-                                       self.rowList[i][8], self.rowList[i][9], self.rowList[i][10])
+                                       self.rowList[i][8], self.rowList[i][9], self.rowList[i][10], self.rowList[i][11])
                 myString = 'Row ' + str(i+1) + ': ' + str(self.rowList[i]) + ' was successfully added.\n'
                 textBox.insert(END, myString)
             except:

@@ -25,7 +25,8 @@ def make_database():
     # Define a cursor object to execute SQL statements
     cur = conn.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS profs (samID INTEGER NOT NULL, firstName TEXT, lastName TEXT, email TEXT, cv TEXT,
-                doctorate_year INTEGER, doctorate_type TEXT, masters_year INTEGER, masters_type TEXT, experience TEXT, profType INTEGER, PRIMARY KEY(samID))""")
+                doctorate_year INTEGER, doctorate_type TEXT, masters_year INTEGER, masters_type TEXT, experience TEXT, profType INTEGER,
+                onlineCert INTEGER, PRIMARY KEY(samID))""")
     cur.execute("""CREATE TABLE IF NOT EXISTS courses (semester TEXT NOT NULL, year INTEGER NOT NULL, courseNum INTEGER NOT NULL, sectionNum INTEGER NOT NULL,
                 instructorID INTEGER, instructorLastName TEXT, instructionMethod INTEGER, ideaScore REAL, PRIMARY KEY(semester, year, courseNum, sectionNum))""")
     conn.commit()

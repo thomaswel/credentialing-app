@@ -18,6 +18,7 @@ class ProfReport:
         self.mastersType = selected_tuple[8]
         self.experience = selected_tuple[9]
         self.profType = selected_tuple[10]
+        self.onlineCert = selected_tuple[11]
 
 
     def create_report(self):
@@ -69,7 +70,17 @@ class ProfReport:
         textBox.insert(END, myString)
         myString = "Master's Degree Year: " + str(self.mastersYear) + str('\n')
         textBox.insert(END, myString)
-        myString = "Master's Degree Spec: " + str(self.mastersType)+ str('\n\n')
+        myString = "Master's Degree Spec: " + str(self.mastersType)+ str('\n')
+        textBox.insert(END, myString)
+        myString = "Online Certification: "
+        certString = ''
+        if (self.onlineCert == 0):
+            certString = "No"
+        elif (self.onlineCert == 1):
+            certString = "Yes"
+        else:
+            certString = "N/A"
+        myString += certString + '\n\n'
         textBox.insert(END, myString)
         myString = "Experience: " + str('\n') + str(self.experience) + str('\n\n')
         textBox.insert(END, myString)

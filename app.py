@@ -8,6 +8,7 @@ import reports
 import startup
 #import excel_import
 import menu
+from idlelib.tooltip import Hovertip
 
 '''
 Author: Thomas Welborn
@@ -52,6 +53,7 @@ def get_selected_row(event):
     e10.delete(0,END)
     e10.insert(END, selected_tuple[9])
     profType_text.set(selected_tuple[10])
+    onlineCert_text.set(selected_tuple[11])
 
 # Grabs the currently selected listbox row for courses
 # and adds the selected contents into the input fields.
@@ -106,13 +108,11 @@ def view_command_courses():
 
 def search_command():
     list1.delete(0,END)
-    list1.insert(END, "Search results for:")
-    list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
-                       docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))  
-    list1.insert(END, "====================================================")
-    for row in backend.search(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
-                              docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()):
-        list1.insert(END,row)
+    try:
+        for row in backend.search(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(), docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get()):
+            list1.insert(END,row)
+    except:
+        pass
 
 def search_doctoral():
     list1.delete(0,END)
@@ -148,13 +148,14 @@ def add_command():
     elif (samID_text.get() == ''):
         pass
     else:
-        backend.insert(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
-                       docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get())
-        list1.delete(0,END)
-        list1.insert(END, "The record below was successfully added:")
-        list1.insert(END, "====================================================")
-        list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
+        try:
+            backend.insert(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(), docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get())
+            list1.insert(END, "The record below was successfully added:")
+            list1.insert(END, "====================================================")
+            list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
                        docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))  
+        except:
+            pass
 
 def add_command_courses():
     # If statement to make sure that all of the primary key fields are filled in before insertion occurs.
@@ -171,12 +172,15 @@ def add_command_courses():
 
 
 def delete_command():
-    backend.delete(selected_tuple[0])
-    list1.delete(0,END)
-    list1.insert(END, "The record below was successfully deleted:")
-    list1.insert(END, "====================================================")
-    list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
+    try:
+        backend.delete(selected_tuple[0])
+        list1.delete(0,END)
+        list1.insert(END, "The record below was successfully deleted:")
+        list1.insert(END, "====================================================")
+        list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
                        docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))
+    except:
+        pass
 
 def delete_command_courses():
     backend.delete_courses(selected_tuple2[0], selected_tuple2[1], selected_tuple2[2], selected_tuple2[3])
@@ -188,14 +192,16 @@ def delete_command_courses():
 
 
 def update_command():
-    backend.update(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
-                     docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get())
-    list1.delete(0,END)
-    list1.insert(END, "The record below was successfully updated:")
-    list1.insert(END, "====================================================")
-    list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
+    try:
+        backend.update(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
+                     docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get())
+        list1.delete(0,END)
+        list1.insert(END, "The record below was successfully updated:")
+        list1.insert(END, "====================================================")
+        list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
                        docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))  
-
+    except:
+        pass
 
 def update_command_courses():
     if ((semester_text.get() == '') or (year_text.get() == '') or (courseNum_text.get() == '') or (sectionNum_text.get() == '')):
@@ -226,6 +232,7 @@ def clear_command():
     e9.delete(0,END)
     e10.delete(0,END)
     profType_text.set("")
+    onlineCert_text.set("")
     list1.delete(0,END)
 
 def clear_command_courses():
@@ -247,7 +254,11 @@ def clear_command_courses():
 #creates window object
 #####################################################################################
 window=Tk()
-window.wm_title("SHSU CRIJ Professor Credentialing Database Desktop App V1.5")
+window.wm_title("SHSU CRIJ Professor Credentialing Database Desktop App V1.6")
+
+window.geometry("850x600")
+window.minsize(850,600)
+
 #icon = ".\\Assets\\Icons\\db_logo.ico"
 #window.iconbitmap(icon)
 
@@ -256,8 +267,8 @@ menu.make_menu(window)
 
 
 # Make the frames to logically separate the GUI.
-frame_profs = LabelFrame(window, text="PROFESSORS", padx=10, pady=10)
-frame_courses = LabelFrame(window, text="COURSES", padx=10, pady=10)
+frame_profs = LabelFrame(window, text="PROFESSORS", labelanchor='nw')
+frame_courses = LabelFrame(window, text="COURSES", labelanchor='nw')
 '''
 frame_profs.pack(padx=10, pady=5, expand=True)
 frame_courses.pack(padx=10, pady=5, expand=True)
@@ -305,8 +316,12 @@ l10.grid(row=9, column=0, sticky='nsew')
 lab11 = Label(frame_profs, text="Prof Type")
 lab11.grid(row=10, column=0, sticky='nsew')
 
-lab12 = Label(frame_profs, text="(1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct)")
-lab12.grid(row=11, column=0, columnspan=3, sticky='nsew')
+lab12 = Label(frame_profs, text="Online Cert")
+lab12.grid(row=11, column=0, sticky='nsew')
+
+# Create a hover tool to tell the professor types.
+profTypeTip = Hovertip(lab11, "1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct", hover_delay=0)
+onlineCertTip = Hovertip(lab12, "0=No, 1=Yes", hover_delay=0)
 
 
 #makes the entry text boxes to accept user input
@@ -355,6 +370,14 @@ profType_options=[1, 2, 3, 4, ""]
 profType_text.set("")
 profTypeDropMenu = OptionMenu(frame_profs, profType_text, *profType_options)
 profTypeDropMenu.grid(row=10, column=1, sticky='nsew')
+profTypeTip2 = Hovertip(profTypeDropMenu, "(1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct)", hover_delay=0)
+
+onlineCert_text = StringVar()
+onlineCert_options=[0, 1, ""]
+onlineCert_text.set("")
+onlineCertDropMenu = OptionMenu(frame_profs, onlineCert_text, *onlineCert_options)
+onlineCertDropMenu.grid(row=11, column=1, sticky='nsew')
+onlineCertTip2 = Hovertip(onlineCertDropMenu, "(0=No, 1=Yes)", hover_delay=0)
 
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
@@ -420,32 +443,36 @@ b11.grid(row=0, column=4, sticky='nsew')
 #########################################################################
 
 #makes the labels beside the text boxes
-l1c = Label(frame_courses,text="Semester (Fall,Spring,Summer)")
+l1c = Label(frame_courses,text="Semester")
 l1c.grid(row=0, column=0, sticky='nsew')
 
-l2c = Label(frame_courses,text="Year (4-digit)")
+l2c = Label(frame_courses,text="Year")
 l2c.grid(row=1, column=0, sticky='nsew')
+year_tip = Hovertip(l2c, "Must be 4 digits (ex. 2014)", hover_delay=0)
 
-l3c = Label(frame_courses,text="Course Number (4-digit)")
+l3c = Label(frame_courses,text="Course Number")
 l3c.grid(row=2, column=0, sticky='nsew')
+course_tip = Hovertip(l3c, "Must be 4 digits (ex. 2362)", hover_delay=0)
 
 l4c = Label(frame_courses,text="Section Number")
 l4c.grid(row=3, column=0, sticky='nsew')
+section_tip = Hovertip(l4c, "Must be 1-2 digits (ex. 7, 07, 12)", hover_delay=0)
 
 l5c = Label(frame_courses,text="Instructor's SamID")
 l5c.grid(row=4, column=0, sticky='nsew')
 
 l6c = Label(frame_courses,text="Instructor's Last Name")
 l6c.grid(row=5, column=0, sticky='nsew')
+instructor_tip = Hovertip(l6c, "First letter must be capitalized.", hover_delay=0)
 
 l7c = Label(frame_courses,text="Instruction Method")
 l7c.grid(row=6, column=0, sticky='nsew')
-
-l8c = Label(frame_courses,text="(1=F2F, 2=Online, 3=Remote)")
-l8c.grid(row=7, column=0, sticky='nsew')
+instructMethod_tip = Hovertip(l7c, "1=F2F, 2=Online, 3=Remote", hover_delay=0)
+#l8c = Label(frame_courses,text="(1=F2F, 2=Online, 3=Remote)")
+#l8c.grid(row=7, column=0, sticky='nsew')
 
 l9c = Label(frame_courses,text="IDEA Score")
-l9c.grid(row=8, column=0, sticky='nsew')
+l9c.grid(row=7, column=0, sticky='nsew')
 
 
 #makes the entry text boxes to accept user input
@@ -454,9 +481,9 @@ sem_options = ["Spring", "Summer", "Fall", ""]
 semester_text.set("")
 semDropMenu = OptionMenu(frame_courses, semester_text, *sem_options)
 semDropMenu.grid(row=0, column=1, sticky='nsew')
+semDropMenu.configure(activebackground='white')
 #e1c = Entry(frame_courses, textvariable = semester_text)
 #e1c.grid(row=0, column=1)
-
 
 year_text = StringVar()
 e2c = Entry(frame_courses, textvariable = year_text)
@@ -483,22 +510,24 @@ instruct_options=[1, 2, 3, ""]
 instructMethod_text.set("")
 instructDropMenu = OptionMenu(frame_courses, instructMethod_text, *instruct_options)
 instructDropMenu.grid(row=6, column=1, sticky='nsew')
+instructDropMenu.configure(activebackground='white')
+instructMethod_tip2 = Hovertip(instructDropMenu, "1=F2F, 2=Online, 3=Remote", hover_delay=0)
 #e7c = Entry(frame_courses, textvariable = instructMethod_text)
 #e7c.grid(row=6, column=1)
 
 ideaScore_text = StringVar()
 e8c = Entry(frame_courses, textvariable = ideaScore_text)
-e8c.grid(row=8, column=1, sticky='nsew')
+e8c.grid(row=7, column=1, sticky='nsew')
 
 
 
 #makes the list box to hold all of the records
 #need to add the scroll bar to the list box as well
 list2 = Listbox(frame_courses, height=15, width=70)
-list2.grid(row=0, column=3, rowspan=9, columnspan=1, sticky='nsew')
+list2.grid(row=0, column=3, rowspan=8, columnspan=1, sticky='nsew')
 
 scrollbar2 = Scrollbar(frame_courses, orient='vertical')
-scrollbar2.grid(row=0, column=4, rowspan = 9, sticky='nsew')
+scrollbar2.grid(row=0, column=4, rowspan = 8, sticky='nsew')
 
 list2.configure(yscrollcommand=scrollbar2.set)
 scrollbar2.configure(command=list2.yview)
@@ -516,6 +545,7 @@ b2c.grid(row=1, column=2, sticky='nsew')
 
 b3c = Button(frame_courses, text='Add Entry', width=12, command=add_command_courses)
 b3c.grid(row=3, column=2, sticky='nsew')
+b3c.configure(activebackground='white')
 
 
 b4c = Button(frame_courses, text='Update Selected', width=12, command=update_command_courses)
@@ -533,9 +563,10 @@ b6c.grid(row=6, column=2)
 b7c = Button(frame_courses, text='Clear Fields', width=12, command=clear_command_courses)
 b7c.grid(row=0, column=2, sticky='nsew')
 
-b8c = Button(frame_courses, text='Generate\nCourse Report\n(Requires:\nSemester,\nYear,Course)', width=12,
+b8c = Button(frame_courses, text='Generate\nCourse Report', width=12,
              command=report_command_courses)
-b8c.grid(row=6, column=2, rowspan=3, sticky='nsew')
+b8c.grid(row=6, column=2, rowspan=2, sticky='nsew')
+reportCourse_tip = Hovertip(b8c, "Requires:Semester,Year,Course", hover_delay=0)
 '''
 but9c = Button(frame_courses, text='\nImport Excel\nDocument\n', width=12,
              command=import_excel_courses)
@@ -544,11 +575,11 @@ but9c.grid(row=0, column=5, rowspan=2)
 
 #Configure the rows and columns to be responsive
 for i in range(0, 11):
-    Grid.rowconfigure(frame_profs, i, weight=1)
+    Grid.rowconfigure(frame_profs, i, weight=2)
 for i in range(1,5):
-    Grid.columnconfigure(frame_profs, i, weight=1)
+    Grid.columnconfigure(frame_profs, i, weight=2)
 
-for i in range(9):
+for i in range(8):
     Grid.rowconfigure(frame_courses, i, weight=1)
 for i in range(1,4):
     Grid.columnconfigure(frame_courses, i, weight=1)

@@ -39,3 +39,12 @@
 
 [20]https://www.youtube.com/watch?v=rZxOe1kVF8Q&list=LL&index=8&t=110s
 
+[21]https://stackoverflow.com/questions/9102897/how-do-i-implement-this-python-tkinter-tooltip-without-overriding-the-button-pre
+
+[22]https://www.geeksforgeeks.org/minsize-method-in-tkinter-python/#:~:text=In%20Tkinter%2C%20minsize()%20method,and%20scale%20the%20window%20larger.&text=Here%2C%20height%20and%20width%20are%20in%20pixels.
+
+[23]https://pythonexamples.org/python-tkinter-window-background-color/#:~:text=There%20are%20two%20ways%20through,property%20bg%20of%20tkinter.Tk.
+
+[24]https://stackoverflow.com/questions/20211942/insert-null-into-sqlite3-in-python
+
+[25]https://yagisanatode.com/2018/02/23/how-do-i-change-the-size-and-position-of-the-main-window-in-tkinter-and-python-3/#:~:text=Because%20we%20are%20not%20setting,200%20by%20200%2Dpixel%20window.
