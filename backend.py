@@ -52,8 +52,8 @@ def search(samID="", firstName="", lastName="", email="", cv="", docYear="", doc
         onlineCert=-1
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
-    cur.execute("""SELECT * FROM profs WHERE samID=? OR firstName=? OR lastName=? OR email=? OR cv=?
-                OR doctorate_year=? OR doctorate_type=? OR masters_year=? OR masters_type=? OR experience=? OR profType=?""",
+    cur.execute("""SELECT * FROM profs WHERE samID=? OR firstName=? COLLATE NOCASE OR lastName=? COLLATE NOCASE OR email=? COLLATE NOCASE OR cv=? COLLATE NOCASE
+                OR doctorate_year=? OR doctorate_type=? OR masters_year=? OR masters_type=? OR experience=? OR profType=? OR onlineCert=?""",
                 (samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert))
     #rows is a tuple containing all rows from db
     rows = cur.fetchall()
@@ -70,7 +70,7 @@ def delete(samID):
 # Update assumes that the samID is correct and will only change the other fields.
 def update(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert):
     # Clean the inputs. If the string is "None" or "", must change to the python None type before updating.
-    if (firstName == "") or (firstName == "None") or (firstName == None):
+    if (firstName == "") or (firstName == "None"):
         firstName = ""
     if (lastName == "") or (lastName == "None"):
         lastName = ""
@@ -243,6 +243,14 @@ def delete_courses(semester, year, courseNum, sectionNum):
 
 # Update assumes that the samID is correct and will only change the other fields.
 def update_courses(semester='', year='', courseNum='', sectionNum='', instructorID='', instructorLastName='', instructionMethod='', ideaScore=''):
+    if instructorID == "None":
+        instructorID = ""
+    if instructorLastName == "None":
+        instructorLastName = ""
+    if instructionMethod == "None":
+        instructionMethod = ""
+    if ideaScore == "None":
+        ideaScore = ""
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("""UPDATE courses SET instructorID=?, instructorLastName=?, instructionMethod=?, ideaScore=?

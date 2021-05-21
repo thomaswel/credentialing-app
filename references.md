@@ -50,3 +50,5 @@
 [25]https://yagisanatode.com/2018/02/23/how-do-i-change-the-size-and-position-of-the-main-window-in-tkinter-and-python-3/#:~:text=Because%20we%20are%20not%20setting,200%20by%20200%2Dpixel%20window.
 
 [26]https://stackoverflow.com/questions/14162723/replacing-pandas-or-numpy-nan-with-a-none-to-use-with-mysqldb
+
+[27]https://stackoverflow.com/questions/973541/how-to-set-sqlite3-to-be-case-insensitive-when-string-comparing

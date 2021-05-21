@@ -23,11 +23,10 @@ def make_database():
     conn = sqlite3.connect("professors.db")
     # Define a cursor object to execute SQL statements
     cur = conn.cursor()
-    cur.execute("""CREATE TABLE IF NOT EXISTS profs (samID INTEGER NOT NULL, firstName TEXT, lastName TEXT, email TEXT, cv TEXT,
-                doctorate_year INTEGER, doctorate_type TEXT, masters_year INTEGER, masters_type TEXT, experience TEXT, profType INTEGER,  
-                onlineCert INTEGER, PRIMARY KEY(samID))""")
-    cur.execute("""CREATE TABLE IF NOT EXISTS courses (semester TEXT NOT NULL, year INTEGER NOT NULL, courseNum INTEGER NOT NULL, sectionNum INTEGER NOT NULL,
-                instructorID INTEGER, instructorLastName TEXT, instructionMethod INTEGER, ideaScore REAL, PRIMARY KEY(semester, year, courseNum, sectionNum))""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS profs (samID INTEGER NOT NULL, firstName TEXT COLLATE NOCASE, lastName TEXT COLLATE NOCASE, email TEXT COLLATE NOCASE, cv TEXT,
+                doctorate_year INTEGER, doctorate_type TEXT, masters_year INTEGER, masters_type TEXT, experience TEXT, profType INTEGER, onlineCert INTEGER, PRIMARY KEY(samID))""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS courses (semester TEXT NOT NULL COLLATE NOCASE, year INTEGER NOT NULL, courseNum INTEGER NOT NULL, sectionNum INTEGER NOT NULL,
+                instructorID INTEGER, instructorLastName TEXT COLLATE NOCASE, instructionMethod INTEGER, ideaScore REAL, PRIMARY KEY(semester, year, courseNum, sectionNum))""")
     conn.commit()
     conn.close()
 

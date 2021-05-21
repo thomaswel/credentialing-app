@@ -11,7 +11,7 @@ from idlelib.tooltip import Hovertip # for pop-up tips.
 Author: Thomas Welborn
 Position: Database Designer - Student Assistant (SHSU Department of Criminal Justice & Criminology)
 Purpose: This program is designed to enable the database containing
-professor and course catalog information to be easily modified and viewed.
+professor and course catalog information to be easily modified and viewed using CRUD.
 It uses the information within the database to produce credentialing
 reports.
 '''
@@ -75,26 +75,32 @@ def get_selected_row_courses(event):
 ##    FUNCTIONS FOR BUTTONS    #############################
 ############################################################
 def report_command():
-    myReport = reports.ProfReport(selected_tuple)
-    myReport.create_report()
+    try:
+        myReport = reports.ProfReport(selected_tuple)
+        myReport.create_report()
+    except:
+        pass
 
 def report_command_courses():
-    myCourseReport = reports.CourseReport(semester_text.get(), year_text.get(), courseNum_text.get())
-    myCourseReport.create_report()
+    try:
+        myCourseReport = reports.CourseReport(semester_text.get(), year_text.get(), courseNum_text.get())
+        myCourseReport.create_report()
+    except:
+        pass
 
 def view_command():
-    #backend.view() returns a list of tuples
-    list1.delete(0,END)
     try:
+        #backend.view() returns a list of tuples
+        list1.delete(0,END)
         for row in backend.view():
             list1.insert(END, row)
     except:
         pass
 
 def view_command_courses():
-    #backend.view_courses() returns a list of tuples
-    list2.delete(0,END)
     try:
+        #backend.view_courses() returns a list of tuples
+        list2.delete(0,END)
         for row in backend.view_courses():
             list2.insert(END, row)
     except:
@@ -105,8 +111,10 @@ def search_command():
     try:
         for row in backend.search(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(), docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get()):
             list1.insert(END,row)
+        return
     except:
-        pass
+        list1.insert(END,"Unable to perform search.")
+        return
 
 def search_doctoral():
     list1.delete(0,END)
@@ -133,10 +141,9 @@ def search_command_courses():
         pass
 
 def add_command():
-    if ((samID_text.get() == '') and (firstName_text.get() == '') and (lastName_text.get() == '') and (email_text.get() =='') and (cv_text.get() =='')
-        and (docYear_text.get() == '') and (docType_text.get() == '') and (mastYear_text.get() == '') and (mastType_text.get() == '') and (experience_text.get() == '') and (profType_text.get() == '')):
+    if (samID_text.get() == ''):
         pass
-    elif (samID_text.get() == ''):
+    elif ((samID_text.get() == '') and (firstName_text.get() == '') and (lastName_text.get() == '') and (email_text.get() =='') and (cv_text.get() =='') and (docYear_text.get() == '') and (docType_text.get() == '') and (mastYear_text.get() == '') and (mastType_text.get() == '') and (experience_text.get() == '') and (profType_text.get() == '') and (onlineCert_text.get() == '')):
         pass
     else:
         try:
@@ -144,7 +151,7 @@ def add_command():
             list1.insert(END, "The record below was successfully added:")
             list1.insert(END, "====================================================")
             list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
-                       docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))  
+                       docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get()))  
         except:
             pass
 
@@ -169,7 +176,7 @@ def delete_command():
         list1.insert(END, "The record below was successfully deleted:")
         list1.insert(END, "====================================================")
         list1.insert(END,(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(),
-                       docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get()))
+                       docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get()))
     except:
         pass
 
@@ -257,10 +264,6 @@ menu.make_menu(window)
 # Make the frames to logically separate the GUI.
 frame_profs = LabelFrame(window, text="PROFESSORS", labelanchor='nw')
 frame_courses = LabelFrame(window, text="COURSES", labelanchor='nw')
-'''
-frame_profs.pack(padx=10, pady=5, expand=True)
-frame_courses.pack(padx=10, pady=5, expand=True)
-'''
 frame_profs.grid(row=0, column=0, sticky='nsew')
 frame_courses.grid(row=1, column=0,sticky='nsew')
 Grid.rowconfigure(window, 0, weight=1)
@@ -270,7 +273,7 @@ Grid.columnconfigure(window, 0, weight=1)
 ##########################################################################
 # POPULATE THE PROFESSOR FRAME
 ##########################################################################
-#makes the labels beside the text boxes
+#makes the labels beside the text boxes for profs frame
 l1 = Label(frame_profs,text="SamID")
 l1.grid(row=0, column=0, sticky='nsew')
 
@@ -303,16 +306,13 @@ l10.grid(row=9, column=0, sticky='nsew')
 
 lab11 = Label(frame_profs, text="Prof Type")
 lab11.grid(row=10, column=0, sticky='nsew')
+profTypeTip = Hovertip(lab11, "1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct", hover_delay=0)
 
 lab12 = Label(frame_profs, text="Online Cert")
 lab12.grid(row=11, column=0, sticky='nsew')
-
-# Create a hover tool to tell the professor types.
-profTypeTip = Hovertip(lab11, "1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct", hover_delay=0)
 onlineCertTip = Hovertip(lab12, "0=No, 1=Yes", hover_delay=0)
 
-
-#makes the entry text boxes to accept user input
+#makes the entry text boxes to accept user input for profs frame
 samID_text = StringVar()
 e1 = Entry(frame_profs, textvariable = samID_text, width=34)
 e1.grid(row=0, column=1, sticky='nsew')
@@ -358,6 +358,7 @@ profType_options=[1, 2, 3, 4, ""]
 profType_text.set("")
 profTypeDropMenu = OptionMenu(frame_profs, profType_text, *profType_options)
 profTypeDropMenu.grid(row=10, column=1, sticky='nsew')
+profTypeDropMenu.configure(activebackground='white')
 profTypeTip2 = Hovertip(profTypeDropMenu, "(1=Full Time, 2=Doctoral Teaching, 3=Overload, 4=Lecturer/Adjunct)", hover_delay=0)
 
 onlineCert_text = StringVar()
@@ -365,9 +366,10 @@ onlineCert_options=[0, 1, ""]
 onlineCert_text.set("")
 onlineCertDropMenu = OptionMenu(frame_profs, onlineCert_text, *onlineCert_options)
 onlineCertDropMenu.grid(row=11, column=1, sticky='nsew')
+onlineCertDropMenu.configure(activebackground='white')
 onlineCertTip2 = Hovertip(onlineCertDropMenu, "(0=No, 1=Yes)", hover_delay=0)
 
-#makes the list box to hold all of the records
+#makes the list box to hold all of the records for profs frame
 #need to add the scroll bar to the list box as well
 list1 = Listbox(frame_profs, height=20, width=70)
 list1.grid(row=1, column=3, rowspan=10, columnspan=2, sticky='nsew')
@@ -385,21 +387,21 @@ scrollbarHoriz1.configure(command=list1.xview)
 list1.bind('<<ListboxSelect>>', get_selected_row)
 
 
-#make the buttons on the right side
+#make the buttons for profs frame
 #note that button commands do not need "()" at the end. it is part of tkinter
 b1 = Button(frame_profs, text='View All', width=12, command=view_command)
-b1.grid(row=2, column=2, sticky='nsew')
+b1.grid(row=0, column=2, sticky='nsew')
 
-b2 = Button(frame_profs, text='Search Entry', width=12, command=search_command)
-b2.grid(row=1, column=2, sticky='nsew')
+b2 = Button(frame_profs, text='Search', width=12, command=search_command)
+b2.grid(row=2, column=2, sticky='nsew')
 
-b3 = Button(frame_profs, text='Add Entry', width=12, command=add_command)
+b3 = Button(frame_profs, text='Add', width=12, command=add_command)
 b3.grid(row=3, column=2, sticky='nsew')
 
-b4 = Button(frame_profs, text='Update Selected', width=12, command=update_command)
+b4 = Button(frame_profs, text='Update', width=12, command=update_command)
 b4.grid(row=4, column=2, sticky='nsew')
 
-b5 = Button(frame_profs, text='Delete Selected', width=12, command=delete_command)
+b5 = Button(frame_profs, text='Delete', width=12, command=delete_command)
 b5.grid(row=5, column=2, sticky='nsew')
 '''
 b6 = Button(frame_profs, text='Exit', width=12, command=window.destroy)
@@ -409,7 +411,7 @@ b7 = Button(frame_profs, text='Open CV', width=12, command=cv_command)
 b7.grid(row=6, column=2, sticky='nsew')
 
 b8 = Button(frame_profs, text='Clear Fields', width=12, command=clear_command)
-b8.grid(row=0, column=2, sticky='nsew')
+b8.grid(row=1, column=2, sticky='nsew')
 
 b9 = Button(frame_profs, text='\nGenerate\nProfessor\nReport\n', width=12, command=report_command)
 b9.grid(row=7, column=2, rowspan=3, sticky='nsew')
@@ -419,11 +421,6 @@ b10.grid(row=0, column=3, sticky='nsew')
 
 b11 = Button(frame_profs, text='Show Only Master\'s Degree Holders', width=29, command=search_masters)
 b11.grid(row=0, column=4, sticky='nsew')
-
-
-
-
-
 
 
 #########################################################################
@@ -526,21 +523,21 @@ list2.bind('<<ListboxSelect>>', get_selected_row_courses)
 #make the buttons on the right side
 #note that button commands do not need "()" at the end. it is part of tkinter
 b1c = Button(frame_courses, text='View All', width=12, command=view_command_courses)
-b1c.grid(row=2, column=2, sticky='nsew')
+b1c.grid(row=0, column=2, sticky='nsew')
 
-b2c = Button(frame_courses, text='Search Entry', width=12, command=search_command_courses)
-b2c.grid(row=1, column=2, sticky='nsew')
+b2c = Button(frame_courses, text='Search', width=12, command=search_command_courses)
+b2c.grid(row=2, column=2, sticky='nsew')
 
-b3c = Button(frame_courses, text='Add Entry', width=12, command=add_command_courses)
+b3c = Button(frame_courses, text='Add', width=12, command=add_command_courses)
 b3c.grid(row=3, column=2, sticky='nsew')
 b3c.configure(activebackground='white')
 
 
-b4c = Button(frame_courses, text='Update Selected', width=12, command=update_command_courses)
+b4c = Button(frame_courses, text='Update', width=12, command=update_command_courses)
 b4c.grid(row=4, column=2, sticky='nsew')
 
 
-b5c = Button(frame_courses, text='Delete Selected', width=12, command=delete_command_courses)
+b5c = Button(frame_courses, text='Delete', width=12, command=delete_command_courses)
 b5c.grid(row=5, column=2, sticky='nsew')
 
 '''
@@ -549,19 +546,16 @@ b6c.grid(row=6, column=2)
 '''
 
 b7c = Button(frame_courses, text='Clear Fields', width=12, command=clear_command_courses)
-b7c.grid(row=0, column=2, sticky='nsew')
+b7c.grid(row=1, column=2, sticky='nsew')
 
 b8c = Button(frame_courses, text='Generate\nCourse Report', width=12,
              command=report_command_courses)
 b8c.grid(row=6, column=2, rowspan=2, sticky='nsew')
 reportCourse_tip = Hovertip(b8c, "Requires:Semester,Year,Course", hover_delay=0)
-'''
-but9c = Button(frame_courses, text='\nImport Excel\nDocument\n', width=12,
-             command=import_excel_courses)
-but9c.grid(row=0, column=5, rowspan=2)
-'''
 
-#Configure the rows and columns to be responsive
+################################################################
+##             CONFIGURE GRID TO BE RESIZABLE                 ##
+################################################################
 for i in range(0, 11):
     Grid.rowconfigure(frame_profs, i, weight=2)
 for i in range(1,5):
@@ -572,8 +566,6 @@ for i in range(8):
 for i in range(1,4):
     Grid.columnconfigure(frame_courses, i, weight=1)
 
-
-
 #end of main window that wraps all of the widgets
 window.mainloop()
-########################################################################
+#################################################################

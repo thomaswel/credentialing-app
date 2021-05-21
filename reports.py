@@ -96,11 +96,11 @@ class ProfReport:
                 ideaSum += courses[i][7]
                 ideaCount += 1
         if (ideaCount == 0):
-            myString = "Average IDEA score across all courses taught: N/A\n"
+            myString = "Average IDEA score across all courses taught: N/A\n\n"
         else:
             ideaAvg = ideaSum / ideaCount
             ideaAvgString = "%.2f" % ideaAvg
-            myString = "Average IDEA score across all courses taught: " + ideaAvgString + "\n"
+            myString = "Average IDEA score across all courses taught: " + ideaAvgString + "\n\n"
         textBox.insert(END, myString)
         
         myString = "Courses Taught: " + str('\n')
