@@ -33,6 +33,9 @@ class ExcelImportCourses:
                     columnLen += 1
                 self.columnNum = columnLen
 
+        # Clean the dataframe object. Remove all NaN where the cell was empty.
+        self.dataframe = self.dataframe.where(pd.notnull(df), "")
+
         # Create the new window to show the imported excel file before touching the db
         top = Toplevel()
         myTitle = "Import Excel File for Courses"
@@ -56,8 +59,28 @@ class ExcelImportCourses:
                 tempRow.append(str(self.dataframe[key][i]))
             self.rowList.append(tempRow)
 
+        # Clean the data. If there was not a value within the cell
+        # in the Excel file, then it will be equal to "nan". Need
+        # to change all of these to an empty string "".
+        '''
+        for i in range (len(self.rowList)):
+            for j in range (len(self.rowList[i])):
+                if (self.rowList[i][j]==None) or (self.rowList[i][j]=="None"):
+                    self.rowList[i][j] == ""
+        '''
         # Display the rows that were successfully added.
         for i in range (len(self.rowList)):
+            # Edge case, do not add rows that are all empty.
+            if self.rowList[i][0] == "" and self.rowList[i][1]=="" and self.rowList[i][2]=="" and self.rowList[i][3]=="" and self.rowList[i][4]=="" and self.rowList[i][5]=="" and self.rowList[i][6]=="" and self.rowList[i][7]=="":
+                myString = 'Error in row ' + str(i+1) + ': ' + str(self.rowList[i]) + '. It was not added.\n'
+                textBox.insert(END, myString)
+                continue
+            # Edge case, do not add rows that have an empty string in one of the required fields. 
+            # Note: empty string != NULL, so SQLite will still add it.
+            if self.rowList[i][0] == "" or self.rowList[i][1]=="" or self.rowList[i][2]=="" or self.rowList[i][3]=="":
+                myString = 'Error in row ' + str(i+1) + ': ' + str(self.rowList[i]) + '. It was not added.\n'
+                textBox.insert(END, myString)
+                continue               
             try:
                 backend.insert_courses(self.rowList[i][0], self.rowList[i][1], self.rowList[i][2], self.rowList[i][3],
                                        self.rowList[i][4], self.rowList[i][5], self.rowList[i][6], self.rowList[i][7])

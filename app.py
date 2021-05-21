@@ -1,28 +1,19 @@
 #!/usr/bin/env python3
 from tkinter import *
-#import tkinter as tk
-import os
-# Import all python files in directory.
-import backend
-import reports
-import startup
-#import excel_import
-import menu
-from idlelib.tooltip import Hovertip
+import os # for directory manipulation.
+import backend # for database queries.
+import reports # generate credentialing reports.
+import startup # make correct directories on startup.
+import menu # make menu at top of application.
+from idlelib.tooltip import Hovertip # for pop-up tips.
 
 '''
 Author: Thomas Welborn
 Position: Database Designer - Student Assistant (SHSU Department of Criminal Justice & Criminology)
-
-Purpose:
-This program is designed to enable the database containing
-professor and course catalog information to be easily modified
-and viewed. 
-It also generates reports based on the data within the
-database in the requested format.
-It has the ability to import Excel files which are then
-parsed and added into the database in order to save time
-on data entry.
+Purpose: This program is designed to enable the database containing
+professor and course catalog information to be easily modified and viewed.
+It uses the information within the database to produce credentialing
+reports.
 '''
 
 # Grabs the currently selected listbox row for professors
@@ -80,12 +71,9 @@ def get_selected_row_courses(event):
     e8c.delete(0,END)
     e8c.insert(END, selected_tuple2[7])
 
-
 ############################################################
 ##    FUNCTIONS FOR BUTTONS    #############################
 ############################################################
-
-    
 def report_command():
     myReport = reports.ProfReport(selected_tuple)
     myReport.create_report()
@@ -97,14 +85,20 @@ def report_command_courses():
 def view_command():
     #backend.view() returns a list of tuples
     list1.delete(0,END)
-    for row in backend.view():
-        list1.insert(END, row)
+    try:
+        for row in backend.view():
+            list1.insert(END, row)
+    except:
+        pass
 
 def view_command_courses():
     #backend.view_courses() returns a list of tuples
     list2.delete(0,END)
-    for row in backend.view_courses():
-        list2.insert(END, row)
+    try:
+        for row in backend.view_courses():
+            list2.insert(END, row)
+    except:
+        pass
 
 def search_command():
     list1.delete(0,END)
@@ -132,14 +126,11 @@ def search_masters():
 
 def search_command_courses():
     list2.delete(0,END)
-    list2.insert(END, "Search results for:")
-    list2.insert(END,(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()))  
-    list2.insert(END, "====================================================")
-    for row in backend.search_courses(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(),
-                               instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()):
-        list2.insert(END,row)
-
+    try:
+        for row in backend.search_courses(semester_text.get(), year_text.get(), courseNum_text.get(), sectionNum_text.get(), instructID_text.get(), instructLastName_text.get(), instructMethod_text.get(), ideaScore_text.get()):
+            list2.insert(END,row)
+    except:
+        pass
 
 def add_command():
     if ((samID_text.get() == '') and (firstName_text.get() == '') and (lastName_text.get() == '') and (email_text.get() =='') and (cv_text.get() =='')
@@ -214,7 +205,6 @@ def update_command_courses():
             list2.delete(0,END)
             list2.insert(END, "Unable to perform update.")
 
-
 def cv_command():
     cv = ".\\Assets\\CVs\\"
     cv += str(selected_tuple[4])
@@ -248,10 +238,8 @@ def clear_command_courses():
     e8c.delete(0,END)
     list2.delete(0,END)
 
-
-
-#start of main window to wrap all of the widgets
-#creates window object
+#####################################################################################
+##        Start of main application window containing all the widgets              ##
 #####################################################################################
 window=Tk()
 window.wm_title("SHSU CRIJ Professor Credentialing Database Desktop App V1.6")

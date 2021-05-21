@@ -3,7 +3,6 @@ import sqlite3
 This file contains necessary functions for modifying
 and querying the sqlite3 'professors' database.
 '''
-
 ######################################################
 ##       FUNCTIONS FOR PROFS TABLE                  ##
 ######################################################
@@ -70,6 +69,28 @@ def delete(samID):
 
 # Update assumes that the samID is correct and will only change the other fields.
 def update(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert):
+    # Clean the inputs. If the string is "None" or "", must change to the python None type before updating.
+    if (firstName == "") or (firstName == "None") or (firstName == None):
+        firstName = ""
+    if (lastName == "") or (lastName == "None"):
+        lastName = ""
+    if (email == "") or (email == "None"):
+        email = ""
+    if (cv == "") or (cv == "None"):
+        cv = ""
+    if (docYear == "") or (docYear == "None"):
+        docYear = ""
+    if (mastYear == "") or (mastYear == "None"):
+        mastYear = ""
+    if (mastType == "") or (mastType == "None"):
+        mastType = ""
+    if (experience == "") or (experience == "None"):
+        experience = ""
+    if (profType == "") or (profType == "None"):
+        profType = ""
+    if (onlineCert == "") or (onlineCert == "None"):
+        onlineCert = ""
+
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("""UPDATE profs SET firstName=?, lastName=?, email=?, cv=?, doctorate_year=?,
@@ -81,7 +102,7 @@ def update(samID, firstName, lastName, email, cv, docYear, docType, mastYear, ma
 def getDoctoralOnly():
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM profs WHERE doctorate_year IS NOT NULL AND doctorate_year!=\'\'")
+    cur.execute("SELECT * FROM profs WHERE doctorate_year IS NOT NULL AND doctorate_year!=\'\' AND doctorate_year != \'None\'")
     rows = cur.fetchall()
     conn.close()
     return rows
@@ -89,7 +110,7 @@ def getDoctoralOnly():
 def getMastersOnly():
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM profs WHERE doctorate_year IS NULL OR doctorate_year=\'\'")
+    cur.execute("SELECT * FROM profs WHERE doctorate_year IS NULL OR doctorate_year=\'\' OR doctorate_year=\'None\'")
     rows = cur.fetchall()
     conn.close()
     return rows
