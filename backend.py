@@ -7,6 +7,29 @@ and querying the sqlite3 'professors' database.
 ##       FUNCTIONS FOR PROFS TABLE                  ##
 ######################################################
 def insert(samID, firstName, lastName, email, cv, docYear, docType, mastYear, mastType, experience, profType, onlineCert):
+    # Clean the inputs. If the string is "None" or "", must change to the python None type before updating.
+    if (samID == "") or (samID == "None"):
+        return
+    if (firstName == "") or (firstName == "None"):
+        firstName = ""
+    if (lastName == "") or (lastName == "None"):
+        lastName = ""
+    if (email == "") or (email == "None"):
+        email = ""
+    if (cv == "") or (cv == "None"):
+        cv = ""
+    if (docYear == "") or (docYear == "None"):
+        docYear = ""
+    if (mastYear == "") or (mastYear == "None"):
+        mastYear = ""
+    if (mastType == "") or (mastType == "None"):
+        mastType = ""
+    if (experience == "") or (experience == "None"):
+        experience = ""
+    if (profType == "") or (profType == "None"):
+        profType = ""
+    if (onlineCert == "") or (onlineCert == "None"):
+        onlineCert = ""
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("INSERT INTO profs VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -128,6 +151,14 @@ def view_courses():
     return rows
 
 def insert_courses(semester, year, courseNum, sectionNum, instructorID, instructorLastName, instructionMethod, ideaScore):
+    if instructorID == "None":
+        instructorID = ""
+    if instructorLastName == "None":
+        instructorLastName = ""
+    if instructionMethod == "None":
+        instructionMethod = ""
+    if ideaScore == "None":
+        ideaScore = ""
     conn = sqlite3.connect("professors.db")
     cur = conn.cursor()
     cur.execute("INSERT INTO courses VALUES (?, ?, ?, ?, ?, ?, ?, ?)",

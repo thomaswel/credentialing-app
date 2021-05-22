@@ -25,8 +25,7 @@ def make_menu(window_name):
     import_menu.add_command(label="Import Professors (Excel)", command = import_excel_profs)
     import_menu.add_command(label="Import Courses (Excel)", command = import_excel_courses)
     import_menu.add_separator()
-    import_menu.add_command(label="Import Single Curriculum Vitae (PDF)", command = import_cv)
-    import_menu.add_command(label="Import Multiple Curriculum Vitaes (Folder containing PDFs)", command = nothing_func)
+    import_menu.add_command(label="Import Curriculum Vitae (PDF)", command = import_cv)
 
     # Create the Help menu item
     help_menu = Menu(my_menu)
@@ -58,3 +57,4 @@ def copy_prof_template():
 def import_cv():
     myCVWindow = pdf_import.ImportCV()
     myCVWindow.get_file()
+

@@ -142,9 +142,9 @@ def search_command_courses():
 
 def add_command():
     if (samID_text.get() == ''):
-        pass
+        return
     elif ((samID_text.get() == '') and (firstName_text.get() == '') and (lastName_text.get() == '') and (email_text.get() =='') and (cv_text.get() =='') and (docYear_text.get() == '') and (docType_text.get() == '') and (mastYear_text.get() == '') and (mastType_text.get() == '') and (experience_text.get() == '') and (profType_text.get() == '') and (onlineCert_text.get() == '')):
-        pass
+        return
     else:
         try:
             backend.insert(samID_text.get(), firstName_text.get(), lastName_text.get(), email_text.get(), cv_text.get(), docYear_text.get(), docType_text.get(), mastYear_text.get(), mastType_text.get(), experience_text.get(), profType_text.get(), onlineCert_text.get())
@@ -213,9 +213,12 @@ def update_command_courses():
             list2.insert(END, "Unable to perform update.")
 
 def cv_command():
-    cv = ".\\Assets\\CVs\\"
-    cv += str(selected_tuple[4])
-    os.startfile(cv)
+    try:
+        cv = ".\\Assets\\CVs\\"
+        cv += str(selected_tuple[4])
+        os.startfile(cv)
+    except:
+        return
 
 def clear_command():
     e1.delete(0,END)
@@ -408,13 +411,13 @@ b6 = Button(frame_profs, text='Exit', width=12, command=window.destroy)
 b6.grid(row=8, column=2)
 '''
 b7 = Button(frame_profs, text='Open CV', width=12, command=cv_command)
-b7.grid(row=6, column=2, sticky='nsew')
+b7.grid(row=6, column=2, rowspan=2, sticky='nsew')
 
 b8 = Button(frame_profs, text='Clear Fields', width=12, command=clear_command)
 b8.grid(row=1, column=2, sticky='nsew')
 
 b9 = Button(frame_profs, text='\nGenerate\nProfessor\nReport\n', width=12, command=report_command)
-b9.grid(row=7, column=2, rowspan=3, sticky='nsew')
+b9.grid(row=8, column=2, rowspan=3, sticky='nsew')
 
 b10 = Button(frame_profs, text='Show Only Doctoral Degree Holders', width=29, command=search_doctoral)
 b10.grid(row=0, column=3, sticky='nsew')
