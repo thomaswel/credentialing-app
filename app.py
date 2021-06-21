@@ -6,12 +6,14 @@ import reports # generate credentialing reports.
 import startup # make correct directories on startup.
 import menu # make menu at top of application.
 from idlelib.tooltip import Hovertip # for pop-up tips.
+from PIL import Image # for images on buttons.
+from PIL import ImageTk # to convert image to photoimage for tkinter.
 
 '''
 Author: Thomas Welborn
 Position: Database Designer - Student Assistant (SHSU Department of Criminal Justice & Criminology)
 Purpose: This program is designed to enable the database containing
-professor and course catalog information to be easily modified and viewed using CRUD.
+professor and course catalog information to be easily modified and viewed.
 It uses the information within the database to produce credentialing
 reports.
 '''
@@ -252,13 +254,16 @@ def clear_command_courses():
 ##        Start of main application window containing all the widgets              ##
 #####################################################################################
 window=Tk()
-window.wm_title("SHSU CRIJ Professor Credentialing Database Desktop App V1.6")
+window.wm_title("SHSU Professor Credentialing Database Desktop App V2.0")
 
 window.geometry("850x600")
 window.minsize(850,600)
 
-#icon = ".\\Assets\\Icons\\db_logo.ico"
-#window.iconbitmap(icon)
+try:
+    icon = ".\\Assets\\Icons\\db_logo.ico"
+    window.iconbitmap(icon)
+except:
+    pass
 
 # Make the menu at the top of the window.
 menu.make_menu(window)
@@ -335,6 +340,7 @@ e4.grid(row=3, column=1, sticky='nsew')
 cv_text = StringVar()
 e5 = Entry(frame_profs, textvariable = cv_text, width=34)
 e5.grid(row=4, column=1, sticky='nsew')
+cvTextTip = Hovertip(e5, "The name of the curriculum vitae PDF file. If you have not imported, leave blank. Make sure to include .pdf onto the end of the file name. It is case sensitive.", hover_delay=0)
 
 docYear_text = StringVar()
 e6 = Entry(frame_profs, textvariable = docYear_text, width=34)
@@ -355,6 +361,7 @@ e9.grid(row=8, column=1, sticky='nsew')
 experience_text = StringVar()
 e10 = Entry(frame_profs, textvariable = experience_text, width=34)
 e10.grid(row=9, column=1, sticky='nsew')
+experienceTextTip = Hovertip(e10, "A brief overview of the professor's accomplishments. Usually taken from their CV.", hover_delay=0)
 
 profType_text = StringVar()
 profType_options=[1, 2, 3, 4, ""]
@@ -390,34 +397,61 @@ scrollbarHoriz1.configure(command=list1.xview)
 list1.bind('<<ListboxSelect>>', get_selected_row)
 
 
+# icon pictures for buttons
+iconList = ['.\\Assets\\Icons\\search.png', '.\\Assets\\Icons\\add.png', '.\\Assets\\Icons\\edit.png',
+        '.\\Assets\\Icons\\trashcan.png', '.\\Assets\\Icons\\openpdf.png', '.\\Assets\\Icons\\report.png', '.\\Assets\\Icons\\coursereport.png']
+WIDTH = 20
+HEIGHT = 20
+photoImageList = []
+for i in range (len(iconList)-2):
+    img = Image.open(iconList[i])
+    img = img.resize((WIDTH,HEIGHT), Image.ANTIALIAS)
+    photoImg =  ImageTk.PhotoImage(img)
+    photoImageList.append(photoImg)
+img = Image.open(iconList[-2])
+img = img.resize((40,40), Image.ANTIALIAS)
+photoImg =  ImageTk.PhotoImage(img)
+photoImageList.append(photoImg)
+img = Image.open(iconList[-1])
+img = img.resize((25,25), Image.ANTIALIAS)
+photoImg =  ImageTk.PhotoImage(img)
+photoImageList.append(photoImg)
+
+
 #make the buttons for profs frame
 #note that button commands do not need "()" at the end. it is part of tkinter
 b1 = Button(frame_profs, text='View All', width=12, command=view_command)
 b1.grid(row=0, column=2, sticky='nsew')
 
-b2 = Button(frame_profs, text='Search', width=12, command=search_command)
+b2 = Button(frame_profs, text='Search', width=12, image=photoImageList[0], command=search_command)
 b2.grid(row=2, column=2, sticky='nsew')
+search_tip = Hovertip(b2, "Search. Fill out 1 or more fields on the left side.", hover_delay=0)
 
-b3 = Button(frame_profs, text='Add', width=12, command=add_command)
+b3 = Button(frame_profs, text='Add', width=12, image=photoImageList[1], command=add_command)
 b3.grid(row=3, column=2, sticky='nsew')
+add_tip = Hovertip(b3, "Add", hover_delay=0)
 
-b4 = Button(frame_profs, text='Update', width=12, command=update_command)
+b4 = Button(frame_profs, text='Update', width=12, image=photoImageList[2], command=update_command)
 b4.grid(row=4, column=2, sticky='nsew')
+update_tip = Hovertip(b4, "Update", hover_delay=0)
 
-b5 = Button(frame_profs, text='Delete', width=12, command=delete_command)
+b5 = Button(frame_profs, text='Delete', width=12, image=photoImageList[3], command=delete_command)
 b5.grid(row=5, column=2, sticky='nsew')
+delete_tip = Hovertip(b5, "Delete", hover_delay=0)
 '''
 b6 = Button(frame_profs, text='Exit', width=12, command=window.destroy)
 b6.grid(row=8, column=2)
 '''
-b7 = Button(frame_profs, text='Open CV', width=12, command=cv_command)
+b7 = Button(frame_profs, text='Open CV', width=12, image=photoImageList[4], command=cv_command)
 b7.grid(row=6, column=2, rowspan=2, sticky='nsew')
+cv_tip = Hovertip(b7, "Open Curriculum Vitae (Make sure to import the professor's curriculum vitae pdf file into the 'CVs' folder.)", hover_delay=0)
 
 b8 = Button(frame_profs, text='Clear Fields', width=12, command=clear_command)
 b8.grid(row=1, column=2, sticky='nsew')
 
-b9 = Button(frame_profs, text='\nGenerate\nProfessor\nReport\n', width=12, command=report_command)
+b9 = Button(frame_profs, text='\nGenerate\nProfessor\nReport\n', width=12, image=photoImageList[5], command=report_command)
 b9.grid(row=8, column=2, rowspan=3, sticky='nsew')
+report_tip = Hovertip(b9, "Generate Professor Report", hover_delay=0)
 
 b10 = Button(frame_profs, text='Show Only Doctoral Degree Holders', width=29, command=search_doctoral)
 b10.grid(row=0, column=3, sticky='nsew')
@@ -528,20 +562,24 @@ list2.bind('<<ListboxSelect>>', get_selected_row_courses)
 b1c = Button(frame_courses, text='View All', width=12, command=view_command_courses)
 b1c.grid(row=0, column=2, sticky='nsew')
 
-b2c = Button(frame_courses, text='Search', width=12, command=search_command_courses)
+b2c = Button(frame_courses, text='Search', width=12, image=photoImageList[0], command=search_command_courses)
 b2c.grid(row=2, column=2, sticky='nsew')
+search_tip2 = Hovertip(b2c, "Search. Fill out one or more fields on the left side.", hover_delay=0)
 
-b3c = Button(frame_courses, text='Add', width=12, command=add_command_courses)
+b3c = Button(frame_courses, text='Add', width=12, image=photoImageList[1], command=add_command_courses)
 b3c.grid(row=3, column=2, sticky='nsew')
 b3c.configure(activebackground='white')
+add_tip2 = Hovertip(b3c, "Add", hover_delay=0)
 
 
-b4c = Button(frame_courses, text='Update', width=12, command=update_command_courses)
+b4c = Button(frame_courses, text='Update', width=12, image=photoImageList[2], command=update_command_courses)
 b4c.grid(row=4, column=2, sticky='nsew')
+update_tip2 = Hovertip(b4c, "Update", hover_delay=0)
 
 
-b5c = Button(frame_courses, text='Delete', width=12, command=delete_command_courses)
+b5c = Button(frame_courses, text='Delete', width=12, image=photoImageList[3], command=delete_command_courses)
 b5c.grid(row=5, column=2, sticky='nsew')
+delete_tip2 = Hovertip(b5c, "Delete", hover_delay=0)
 
 '''
 b6c = Button(frame_courses, text='Exit', width=12, command=window.destroy)
@@ -551,10 +589,10 @@ b6c.grid(row=6, column=2)
 b7c = Button(frame_courses, text='Clear Fields', width=12, command=clear_command_courses)
 b7c.grid(row=1, column=2, sticky='nsew')
 
-b8c = Button(frame_courses, text='Generate\nCourse Report', width=12,
+b8c = Button(frame_courses, text='Generate\nCourse Report', width=12, image=photoImageList[-1],
              command=report_command_courses)
 b8c.grid(row=6, column=2, rowspan=2, sticky='nsew')
-reportCourse_tip = Hovertip(b8c, "Requires:Semester,Year,Course", hover_delay=0)
+reportCourse_tip = Hovertip(b8c, "Generate Course Report. (Requires:Semester,Year,Course fields to be filled out on left side.)", hover_delay=0)
 
 ################################################################
 ##             CONFIGURE GRID TO BE RESIZABLE                 ##

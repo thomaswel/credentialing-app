@@ -52,3 +52,7 @@
 [26]https://stackoverflow.com/questions/14162723/replacing-pandas-or-numpy-nan-with-a-none-to-use-with-mysqldb
 
 [27]https://stackoverflow.com/questions/973541/how-to-set-sqlite3-to-be-case-insensitive-when-string-comparing
+
+[28]https://stackoverflow.com/questions/6582387/image-resize-under-photoimage/38241889
+
+[29]https://www.iconfinder.com/search/?q=report&price=free

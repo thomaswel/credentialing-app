@@ -1,5 +1,6 @@
 #import tkinter as tk
 from tkinter import *
+import os
 import excel_import
 import template_copy
 import pdf_import
@@ -30,31 +31,50 @@ def make_menu(window_name):
     # Create the Help menu item
     help_menu = Menu(my_menu)
     my_menu.add_cascade(label="Help", menu=help_menu)
-    help_menu.add_command(label="Getting Started", command = nothing_func)
-    help_menu.add_separator()
-    help_menu.add_command(label="Complete User Manual", command = nothing_func)
+    help_menu.add_command(label="User Manual", command = open_usermanual)
 
 
 def nothing_func():
     print('hi')
 
 def import_excel_courses():
-    myImportWindow = excel_import.ExcelImportCourses()
-    myImportWindow.add_rows()
+    try:
+        myImportWindow = excel_import.ExcelImportCourses()
+        myImportWindow.add_rows()
+    except:
+        pass
 
 def import_excel_profs():
-    myImportWindow = excel_import.ExcelImportProfs()
-    myImportWindow.add_rows()
+    try:
+        myImportWindow = excel_import.ExcelImportProfs()
+        myImportWindow.add_rows()
+    except:
+        pass
 
 def copy_course_template():
-    myCopyWindow = template_copy.GetCourseTemplate()
-    myCopyWindow.get_destination()
+    try:
+        myCopyWindow = template_copy.GetCourseTemplate()
+        myCopyWindow.get_destination()
+    except:
+        pass
 
 def copy_prof_template():
-    myCopyWindow = template_copy.GetProfTemplate()
-    myCopyWindow.get_destination()
+    try:
+        myCopyWindow = template_copy.GetProfTemplate()
+        myCopyWindow.get_destination()
+    except:
+        pass
 
 def import_cv():
-    myCVWindow = pdf_import.ImportCV()
-    myCVWindow.get_file()
+    try:
+        myCVWindow = pdf_import.ImportCV()
+        myCVWindow.get_file()
+    except:
+        pass
+
+def open_usermanual():
+    try:
+        os.startfile(".\\Assets\\Documentation\\UserManual.pdf")
+    except:
+        pass
 

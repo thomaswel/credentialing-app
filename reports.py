@@ -130,7 +130,7 @@ class CourseReport:
     def create_report(self):
         # Create the new window and grid widgets
         top = Toplevel()
-        myTitle = "Course Report for: " + str(self.semester) + " " + str(self.year) + " CRIJ " + str(self.courseNum)
+        myTitle = "Course Report for: " + str(self.semester) + " " + str(self.year) + " Course Number: " + str(self.courseNum)
         top.wm_title(myTitle)
         textBox = Text(top, height=20, width=65)
         textBox.grid(row=0, column=0, sticky='nsew')
@@ -144,7 +144,7 @@ class CourseReport:
         Grid.columnconfigure(top, 0, weight=1)
 
         # Populate the text box
-        myString = "Course Report for: " + str(self.semester) + " " + str(self.year) + " CRIJ " + str(self.courseNum)
+        myString = "Course Report for: " + str(self.semester) + " " + str(self.year) + " Course Number: " + str(self.courseNum)
         textBox.insert(END, myString)
         textBox.insert(END, str('\n\n'))
         
